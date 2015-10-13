@@ -432,11 +432,11 @@ var resizePizzas = function(size) {
     function sizeSwitcher (size) {
       switch(size) {
         case "1":
-          return 0.25;
+          return 25;
         case "2":
-          return 0.3333;
+          return 33.33;
         case "3":
-          return 0.5;
+          return 50;
         default:
           console.log("bug in sizeSwitcher");
       }
@@ -450,18 +450,18 @@ var resizePizzas = function(size) {
 
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
-    /* We see document.querySelectorAll used again, but this time the DOM is being accessed for every iteration twice
-       1) Everytime we check i < the length of the array
-       2) Everytime we are changing the width of the individual element in our CSS
+    /* added new variable randomPizza to replace document.querySelectorAll(".randomPizzaContainer")
+    moved dx and newwidth variables out of the for loop since both are calling layout properties
     */
+    var randomPizza = document.querySelectorAll(".randomPizzaContainer");
 
-    for (var i = 0; i < document.querySelectorAll(".randomPizzaContainer").length; i++) {
+    var dx = determineDx(randomPizza[i], size);
+    var newwidth = (randomPizza[i].offsetWidth + dx) + '%';
+    console.log(dx, newwidth);
+
+    for (var i = 0; i < randomPizza.length; i++) {
       /* Again let's console.log() dx and newwidth and see how crucial these numbers are that need to be calculated inside the For Loop */
-      var dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[i], size);
-      var newwidth = (document.querySelectorAll(".randomPizzaContainer")[i].offsetWidth + dx) + 'px';
-      console.log(dx, newwidth);
-
-      document.querySelectorAll(".randomPizzaContainer")[i].style.width = newwidth;
+      randomPizza[i].style.width = newwidth;
     }
   }
 
@@ -513,13 +513,12 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
-  //Changed querySelectorAll to getElementByClass which is faster
-  var items = document.getElementByClass('.mover');
-  //Moved var phase out of loop since it's calling layout property scrollTop
-  var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
+  var items = document.querySelectorAll('.mover');
+  //Moved var phase out of loop since it's calling layout property scrollTop & removed (i % 5)
+  var phase = Math.sin(document.body.scrollTop / 1250);
   //console.log(phase, document.body.scrollTop / 1250);
   for (var i = 0; i < items.length; i++) {
-    items[i].style.translateX = items[i].basicLeft + 100 * phase + 'px';
+    items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
   }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
@@ -539,7 +538,7 @@ window.addEventListener('scroll', updatePositions);
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
-  for (var i = 0; i < 200; i++) {
+  for (var i = 0; i < 36; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
