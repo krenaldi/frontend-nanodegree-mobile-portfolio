@@ -450,12 +450,24 @@ var resizePizzas = function(size) {
 
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
+    /* We see document.querySelectorAll used again, but this time the DOM is being accessed for every iteration twice
+       1) Everytime we check i < the length of the array
+       2) Everytime we are changing the width of the individual element in our CSS
+    */
+
     for (var i = 0; i < document.querySelectorAll(".randomPizzaContainer").length; i++) {
+      /* Again let's console.log() dx and newwidth and see how crucial these numbers are that need to be calculated inside the For Loop */
       var dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[i], size);
       var newwidth = (document.querySelectorAll(".randomPizzaContainer")[i].offsetWidth + dx) + 'px';
+      console.log(dx, newwidth);
+
       document.querySelectorAll(".randomPizzaContainer")[i].style.width = newwidth;
     }
   }
+
+  /* Advanced: Since the pizza widths are change the same width, is there a way to set the width all at once? Perhaps we can use CSS to set the width
+     of 'randomPizzaContainer'?
+  */
 
   changePizzaSizes(size);
 
@@ -501,11 +513,13 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
-
-  var items = document.querySelectorAll('.mover');
+  //Changed querySelectorAll to getElementByClass which is faster
+  var items = document.getElementByClass('.mover');
+  //Moved var phase out of loop since it's calling layout property scrollTop
+  var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
+  //console.log(phase, document.body.scrollTop / 1250);
   for (var i = 0; i < items.length; i++) {
-    var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
-    items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
+    items[i].style.translateX = items[i].basicLeft + 100 * phase + 'px';
   }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
