@@ -34,12 +34,13 @@ form {
   width: 256px;
   z-index: -1;
   backface-visibility: hidden;
-  transform: translateX(0);
 }
 
 .randomPizzaContainer {
   float: left;
   display: flex;
+  width: 33.33%;
+  will-change: transform;
 }
 
 .randomPizzaContainer:after {

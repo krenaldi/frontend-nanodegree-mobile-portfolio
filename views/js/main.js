@@ -432,11 +432,11 @@ var resizePizzas = function(size) {
     function sizeSwitcher (size) {
       switch(size) {
         case "1":
-          return 25;
+          return '.25';
         case "2":
-          return 33.33;
+          return '.3333';
         case "3":
-          return 50;
+          return '.50';
         default:
           console.log("bug in sizeSwitcher");
       }
@@ -450,19 +450,34 @@ var resizePizzas = function(size) {
 
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
-    /* added new variable randomPizza to replace document.querySelectorAll(".randomPizzaContainer")
-    moved dx and newwidth variables out of the for loop since both are calling layout properties
+    //requestAnimationFrame(changePizzaSizes);
+
+    //Added switch cases to change pizza pic by percentage
+    switch(size) {
+        case "1":
+          newWidth = "25";
+          break;
+        case "2":
+          newWidth = "33.33";
+          break;
+        case "3":
+          newWidth = "50";
+          break;
+        default:
+          console.log("bug in changePizzaSizes");
+      }
+    /* added new variable randomPizza to replace document.querySelectorAll(".randomPizzaContainer") and 
+    removed dx and newwidth variables out of the for loop since both are not needed
     */
-    var randomPizza = document.querySelectorAll(".randomPizzaContainer");
+    var randomPizzas = document.getElementsByClassName("randomPizzaContainer");
+    
+    //console.log(dx, newwidth);
 
-    var dx = determineDx(randomPizza[i], size);
-    var newwidth = (randomPizza[i].offsetWidth + dx) + '%';
-    console.log(dx, newwidth);
-
-    for (var i = 0; i < randomPizza.length; i++) {
+    for (var i = 0; i < randomPizzas.length; i++) {
       /* Again let's console.log() dx and newwidth and see how crucial these numbers are that need to be calculated inside the For Loop */
-      randomPizza[i].style.width = newwidth;
+      randomPizzas[i].style.width = newWidth + "%";
     }
+  //requestAnimationFrame(changePizzaSizes);  
   }
 
   /* Advanced: Since the pizza widths are change the same width, is there a way to set the width all at once? Perhaps we can use CSS to set the width
