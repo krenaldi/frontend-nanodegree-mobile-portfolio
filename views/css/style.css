@@ -40,7 +40,6 @@ form {
   float: left;
   display: flex;
   width: 33.33%;
-  will-change: transform;
 }
 
 .randomPizzaContainer:after {

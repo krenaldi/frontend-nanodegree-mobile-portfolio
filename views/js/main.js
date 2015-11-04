@@ -424,7 +424,7 @@ var resizePizzas = function(size) {
   // Returns the size difference to change a pizza element from one size to another. Called by changePizzaSlices(size).
   function determineDx (elem, size) {
     var oldwidth = elem.offsetWidth;
-    var windowwidth = document.querySelector("#randomPizzas").offsetWidth;
+    var windowwidth = document.getElementsById("randomPizzas").offsetWidth;
     var oldsize = oldwidth / windowwidth;
 
     // TODO: change to 3 sizes? no more xl?
@@ -450,7 +450,6 @@ var resizePizzas = function(size) {
 
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
-    //requestAnimationFrame(changePizzaSizes);
 
     //Added switch cases to change pizza pic by percentage
     switch(size) {
@@ -477,7 +476,6 @@ var resizePizzas = function(size) {
       /* Again let's console.log() dx and newwidth and see how crucial these numbers are that need to be calculated inside the For Loop */
       randomPizzas[i].style.width = newWidth + "%";
     }
-  //requestAnimationFrame(changePizzaSizes);  
   }
 
   /* Advanced: Since the pizza widths are change the same width, is there a way to set the width all at once? Perhaps we can use CSS to set the width
@@ -528,11 +526,21 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
-  var items = document.querySelectorAll('.mover');
-  //Moved var phase out of loop since it's calling layout property scrollTop & removed (i % 5)
-  var phase = Math.sin(document.body.scrollTop / 1250);
-  //console.log(phase, document.body.scrollTop / 1250);
-  for (var i = 0; i < items.length; i++) {
+  //changed items using getElementsByClassName which gives quicker response
+  var items = document.getElementsByClassName('mover');
+  //adding top variable to cache document.body.scrollTop
+  var top = document.body.scrollTop;
+  /*Building an array since Math.sin((document.body.scrollTop / 1250) + (i % 5)) generates the same the same 5 values*/
+  var positionArray = [];
+  var i;
+  //Generate the same five values which were always repeating & place them in the positionArray
+  //Also removes the style change from the loop to prevent forced layouts
+  for (i = 0; i < 5; i++) {
+    positionArray.push(Math.sin((top / 1250) + i % 5));
+  }
+
+  for (i = 0; i < items.length; i++) {
+    var phase = positionArray[i % 5];
     items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
   }
 
@@ -553,7 +561,7 @@ window.addEventListener('scroll', updatePositions);
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
-  for (var i = 0; i < 36; i++) {
+  for (var i = 0; i < 100; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
