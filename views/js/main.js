@@ -424,7 +424,7 @@ var resizePizzas = function(size) {
   // Returns the size difference to change a pizza element from one size to another. Called by changePizzaSlices(size).
   function determineDx (elem, size) {
     var oldwidth = elem.offsetWidth;
-    var windowwidth = document.getElementsById("randomPizzas").offsetWidth;
+    var windowwidth = document.querySelector("#randomPizzas").offsetWidth;
     var oldsize = oldwidth / windowwidth;
 
     // TODO: change to 3 sizes? no more xl?
@@ -450,7 +450,7 @@ var resizePizzas = function(size) {
 
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
-
+    
     //Added switch cases to change pizza pic by percentage
     switch(size) {
         case "1":
@@ -469,18 +469,14 @@ var resizePizzas = function(size) {
     removed dx and newwidth variables out of the for loop since both are not needed
     */
     var randomPizzas = document.getElementsByClassName("randomPizzaContainer");
-    
-    //console.log(dx, newwidth);
+    //var dx = determineDx(randomPizzas[i], size);
+    //var newwidth = (randomPizzas[i].offsetWidth + dx) + 'px';
+    //console.log(dx);
 
     for (var i = 0; i < randomPizzas.length; i++) {
-      /* Again let's console.log() dx and newwidth and see how crucial these numbers are that need to be calculated inside the For Loop */
-      randomPizzas[i].style.width = newWidth + "%";
+      randomPizzas[i].style.width = newWidth + '%';
     }
   }
-
-  /* Advanced: Since the pizza widths are change the same width, is there a way to set the width all at once? Perhaps we can use CSS to set the width
-     of 'randomPizzaContainer'?
-  */
 
   changePizzaSizes(size);
 
